@@ -1,5 +1,7 @@
 pub mod memory;
 pub mod local;
+pub mod s3;
+pub mod test_helpers;
 
 use std::io;
 
