@@ -1,6 +1,6 @@
 #[tokio::test]
 async fn test_s3_object_store() {
-    use vdb2::object_store::s3::S3Store;
+    use blob_store::object_store::s3::S3Store;
     use aws_config;
     use aws_sdk_s3::Client;
 
@@ -12,5 +12,5 @@ async fn test_s3_object_store() {
 
     // Use a unique prefix for isolation
     let prefix = format!("test/{}/", uuid::Uuid::new_v4());
-    vdb2::object_store::test_helpers::tests::run_object_store_tests(&store, &prefix);
+    blob_store::object_store::test_helpers::tests::run_object_store_tests(&store, &prefix);
 }

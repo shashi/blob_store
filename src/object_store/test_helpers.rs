@@ -3,11 +3,6 @@ pub mod tests {
     use crate::object_store::{ObjectStore, IfMatch, ObjectStoreError};
     use uuid::Uuid;
 
-    // Helper to generate a unique prefix for each test run
-    fn unique_prefix() -> String {
-        format!("test/{}/", Uuid::new_v4())
-    }
-
     // Generic tests for any ObjectStore implementation
     pub fn run_object_store_tests(store: &dyn ObjectStore, prefix: &str) {
         // Put and get
