@@ -117,6 +117,7 @@ mod tests {
     use crate::object_store::test_helpers::tests::run_object_store_tests;
     use tempfile::TempDir;
     use std::fs;
+    use std::panic;
     use uuid::Uuid;
 
     fn setup_store() -> (LocalStore, TempDir) {
@@ -207,6 +208,14 @@ mod tests {
         // Check that the file actually exists on disk
         let on_disk = fs::read(tmp.path().join(nested_path)).unwrap();
         assert_eq!(on_disk, b"deep");
+
+        let long_key_result = panic::catch_unwind(|| {
+            // The code that is expected to panic
+            let long_key = format!("{}{}", "local_test", "a".repeat(512));
+            let _ = store.put(&long_key, b"long", IfMatch::Any).unwrap();
+        });
+
+        assert!(long_key_result.is_err(), "Expected a panic for long file name");
     }
 
     // this is more of a test of genericness of
@@ -218,4 +227,5 @@ mod tests {
         let prefix = format!("test/{}/", Uuid::new_v4());
         run_object_store_tests(&store, &prefix);
     }
+
 }

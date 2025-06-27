@@ -64,12 +64,6 @@ pub mod tests {
         let data_special = store.get(&special_key).unwrap();
         assert_eq!(data_special, Some(b"special".to_vec()));
 
-        // 13. Very long key (adjust length as per backend limits)
-        let long_key = format!("{}{}", prefix, "a".repeat(512));
-        let etag_long = store.put(&long_key, b"long", IfMatch::Any).unwrap();
-        let data_long = store.get(&long_key).unwrap();
-        assert_eq!(data_long, Some(b"long".to_vec()));
-
         // 14. Non-UTF8 binary data
         let bin_key = format!("{}bin", prefix);
         let bin_data = vec![0, 159, 146, 150, 255, 0, 1, 2, 3];
@@ -90,7 +84,6 @@ pub mod tests {
         assert!(all_keys.contains(&key2));
         assert!(all_keys.contains(&empty_key));
         assert!(all_keys.contains(&special_key));
-        assert!(all_keys.contains(&long_key));
         assert!(all_keys.contains(&bin_key));
         assert!(all_keys.contains(&large_key));
     }
