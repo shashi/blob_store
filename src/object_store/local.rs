@@ -114,8 +114,10 @@ impl ObjectStore for LocalStore {
 mod tests {
     use super::*;
     use crate::object_store::{IfMatch, ObjectStore};
+    use crate::object_store::test_helpers::tests::run_object_store_tests;
     use tempfile::TempDir;
     use std::fs;
+    use uuid::Uuid;
 
     fn setup_store() -> (LocalStore, TempDir) {
         let tmp = TempDir::new().unwrap();
@@ -205,5 +207,15 @@ mod tests {
         // Check that the file actually exists on disk
         let on_disk = fs::read(tmp.path().join(nested_path)).unwrap();
         assert_eq!(on_disk, b"deep");
+    }
+
+    // this is more of a test of genericness of
+    // the trait implementation
+    #[test]
+    fn test_local_object_store() {
+        let tmp = TempDir::new().unwrap();
+        let store = LocalStore::new(tmp.path());
+        let prefix = format!("test/{}/", Uuid::new_v4());
+        run_object_store_tests(&store, &prefix);
     }
 }

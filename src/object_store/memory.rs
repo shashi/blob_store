@@ -89,6 +89,8 @@ impl ObjectStore for InMemoryStore {
 mod tests {
     use super::*;
     use crate::object_store::{IfMatch, ObjectStore};
+    use crate::object_store::test_helpers::tests::run_object_store_tests;
+    use uuid::Uuid;
 
     #[test]
     fn test_put_and_get() {
@@ -158,5 +160,12 @@ mod tests {
         assert!(keys.contains(&"folder/a.txt".to_string()));
         assert!(keys.contains(&"folder/b.txt".to_string()));
         assert!(keys.contains(&"folder/c.txt".to_string()));
+    }
+
+    #[test]
+    fn test_in_memory_object_store() {
+        let store = InMemoryStore::default();
+        let prefix = format!("test/{}/", Uuid::new_v4());
+        run_object_store_tests(&store, &prefix);
     }
 }
