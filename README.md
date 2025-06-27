@@ -1,6 +1,6 @@
 # `blob_store`
 
-A crate to abstract blob storage across in-memory, on local file system, and on s3.
+A crate to abstract blob storage across RAM, local file system, and AWS S3.
 
 ```
 blob_store/
